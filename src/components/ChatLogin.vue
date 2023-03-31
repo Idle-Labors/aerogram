@@ -2,10 +2,20 @@
   <div>
     <div class="img-placeholder"></div>
     <b-card class="custom-card">
-      <b-form-group label="Username:">
-        <b-form-input required type="text" v-model="username" placeholder="Enter Username" />
-      </b-form-group>
-
+      <ValidationProvider
+        name="email"
+        rules="required|email"
+        v-slot="{ errors }"
+      >
+        <b-form-group label="Username:">
+          <b-form-input
+            required
+            type="text"
+            v-model="username"
+            placeholder="Enter Username"
+          />
+        </b-form-group>
+      </ValidationProvider>
       <b-form-group class="mt-2" label="Password:">
         <b-input-group>
           <b-form-input
@@ -50,6 +60,7 @@
 
 <script>
 import Vue from "vue";
+import { ValidationProvider } from "vee-validate";
 
 export default Vue.extend({
   data() {
@@ -60,15 +71,20 @@ export default Vue.extend({
       errorMsg: "",
     };
   },
+  components: {
+    ValidationProvider,
+  },
   methods: {
     submitValidate() {
       if (this.username === "" || this.password === "") {
         this.errorMsg = "Please enter your username and password";
-      } else if (this.username != "" && this.password != "") {
-        this.errorMsg = "";
-      } else {
-        //api call
+        return false;
       }
+      if (this.username.length > 12) {
+        this.errorMsg = "Username must be 12 characters or less";
+        return false;
+      }
+      return true;
     },
   },
 });
@@ -80,7 +96,7 @@ export default Vue.extend({
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: rgb(187, 218, 203);
+  background: #a0c1d1;
   box-shadow: -7px -7px 9px #dfded5, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;
@@ -88,7 +104,7 @@ export default Vue.extend({
 }
 
 .img-placeholder {
-  background-color: rgb(141, 180, 141);
+  background-color: rgb(118, 160, 118);
   height: 12rem;
 }
 .forgot-create-links a {
