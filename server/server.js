@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const port = process.env.port || 3000;
 const io = new Server(server);
 
-app.use('/api', api);
+app.use("/api", api);
 app.use(express.json());
 
 io.on("connection", (socket) => {

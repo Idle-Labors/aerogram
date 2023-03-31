@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-    <router-view />
+    <div class="img-placeholder"></div>
+    <ChatSignup />
   </div>
 </template>
 
 <script lang="ts">
-import ChatLogin from "./components/ChatLogin.vue";
-import ChatSignup from "./components/ChatSignup.vue";
+import ChatLogin from "../components/ChatLogin.vue";
+import ChatSignup from "../components/ChatSignup.vue";
 
 export default {
   name: "App",
@@ -24,5 +25,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.img-placeholder {
+  background-image: url(../assets/login2.png);
+  height: 12rem;
 }
 </style>

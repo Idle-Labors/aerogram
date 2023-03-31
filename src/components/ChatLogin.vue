@@ -1,21 +1,15 @@
 <template>
   <div>
-    <div class="img-placeholder"></div>
     <b-card class="custom-card">
-      <ValidationProvider
-        name="email"
-        rules="required|email"
-        v-slot="{ errors }"
-      >
-        <b-form-group label="Username:">
-          <b-form-input
-            required
-            type="text"
-            v-model="username"
-            placeholder="Enter Username"
-          />
-        </b-form-group>
-      </ValidationProvider>
+      <b-form-group label="Username:">
+        <b-form-input
+          required
+          type="text"
+          v-model="username"
+          placeholder="Enter Username"
+        />
+      </b-form-group>
+
       <b-form-group class="mt-2" label="Password:">
         <b-input-group>
           <b-form-input
@@ -37,7 +31,7 @@
         <b-button
           variant="dark"
           class="mx-3"
-          @click="submitValidate"
+          @click="loginValidate"
           type="submit"
           >Login</b-button
         >
@@ -60,7 +54,8 @@
 
 <script>
 import Vue from "vue";
-import { ValidationProvider } from "vee-validate";
+import Yup from "yup";
+import { user } from "../router/api";
 
 export default Vue.extend({
   data() {
@@ -71,20 +66,27 @@ export default Vue.extend({
       errorMsg: "",
     };
   },
-  components: {
-    ValidationProvider,
-  },
+  components: {},
   methods: {
-    submitValidate() {
-      if (this.username === "" || this.password === "") {
-        this.errorMsg = "Please enter your username and password";
-        return false;
+    async loginValidate() {
+      const loginSchema = Yup.object().shape({
+        username: Yup.string()
+          .required("Username Required")
+          .max(18, "You reached the maximum number of characters"),
+        password: Yup.string()
+          .required("Password Required")
+          .max(20, "You reached the maximum number of characters"),
+      });
+      try {
+        let isValid = await loginSchema.validate({
+          username: this.username,
+          password: this.password,
+        });
+        let response = await user.validationCheck(isValid);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
       }
-      if (this.username.length > 12) {
-        this.errorMsg = "Username must be 12 characters or less";
-        return false;
-      }
-      return true;
     },
   },
 });
@@ -96,17 +98,13 @@ export default Vue.extend({
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: #a0c1d1;
+  background: rgb(118, 160, 118);
   box-shadow: -7px -7px 9px #dfded5, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;
   padding: 1rem;
 }
 
-.img-placeholder {
-  background-color: rgb(118, 160, 118);
-  height: 12rem;
-}
 .forgot-create-links a {
   text-decoration: none;
 }
