@@ -112,7 +112,7 @@ export default {
           password: this.password,
           passwordCheck: this.passwordCheck,
         });
-        let response = await user.signupCheck(isValid);
+        let response = await user.signup(isValid);
         console.log(response);
       } catch (error) {
         console.log(error);

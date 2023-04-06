@@ -42,31 +42,61 @@ export async function validateSignup(req, res, next) {
 
 export async function addUserToDatabase(req, res) {
   const { username, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password);
 
   try {
-    const existingUser = await db.query(
+    const getUser = await db.query(
       "SELECT * FROM users.user_info WHERE username = $1 OR email = $2",
       [username, email]
     );
-    if (existingUser.rows.length > 0) {
+    if (getUser.rowCount > 0) {
       return res
         .status(400)
-        .json({ message: "Username or email already exists" });
+        .json({ success: false, message: "Username or email already exists" });
+    } else {
+      const hashedPassword = await bcrypt.hash(password);
+      const result = await db.query(
+        "INSERT INTO users.user_info (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+        [username, email, hashedPassword]
+      );
+      res.status(201).json({
+        success: true,
+        message: "User added successfully",
+        user: result.rows[0],
+      });
     }
-    const result = await db.query(
-      "INSERT INTO users.user_info (id, username, email, password) VALUES ($1, $2, $3) RETURNING *",
-      [username, email, hashedPassword]
-    );
-    res.status(201).json({
-      success: true,
-      message: "User added successfully",
-      user: result.rows[0],
-    });
   } catch (error) {
     return res.status(400).json({
       success: true,
       message: "Failed",
     });
+  }
+}
+
+export async function getUserFromDatabase(req, res) {
+  const { username, password } = req.body;
+  try {
+    const getUser = await db.query(
+      "SELECT * FROM users.user_info WHERE username = $1",
+      [username]
+    );
+    if (getUser.rowCount == 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    const passwordMatch = bcrypt.compare(password, getUser.rows[0].password);
+    if (!passwordMatch) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid username or password" });
+    } else if (passwordMatch) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Login successful!" });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error occured" });
   }
 }

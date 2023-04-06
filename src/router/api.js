@@ -1,11 +1,10 @@
-import router from "./index";
 import axios from "axios";
 
 export const user = {
-  checkValidation(isValid) {
-    return axios.post("/api/login", isValid);
+  login(data) {
+    return axios.post("/api/login", data);
   },
-  signupCheck(isValid) {
-    return axios.post("/api/signup", isValid);
+  signup(data) {
+    return axios.post("/api/signup", data);
   },
 };

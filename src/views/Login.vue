@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div class="img-placeholder"></div>
-    <ChatSignup />
+    <component
+      :is="renderLogin ? 'ChatLogin' : 'ChatSignup'"
+      @render-signup="renderSignup"
+    />
   </div>
 </template>
 
@@ -10,10 +13,20 @@ import ChatLogin from "../components/ChatLogin.vue";
 import ChatSignup from "../components/ChatSignup.vue";
 
 export default {
-  name: "App",
+  data() {
+    return {
+      renderLogin: true,
+    };
+  },
+  name: "login",
   components: {
     ChatLogin,
     ChatSignup,
+  },
+  methods: {
+    renderSignup() {
+      this.renderLogin = false;
+    },
   },
 };
 </script>

@@ -44,7 +44,7 @@
         <b-link to="/forgotPassword" class="small text-muted"
           >Forgot Password</b-link
         >
-        <b-link to="/createAccount" class="small text-muted"
+        <b-link class="small text-muted" @click="signup"
           >Don't have an account?</b-link
         >
       </div>
@@ -68,6 +68,9 @@ export default Vue.extend({
   },
   components: {},
   methods: {
+    signup() {
+      this.$emit("render-signup");
+    },
     async loginValidate() {
       const loginSchema = Yup.object().shape({
         username: Yup.string()
@@ -82,7 +85,7 @@ export default Vue.extend({
           username: this.username,
           password: this.password,
         });
-        let response = await user.validationCheck(isValid);
+        let response = await user.login(isValid);
         console.log(response);
       } catch (error) {
         console.log(error);
