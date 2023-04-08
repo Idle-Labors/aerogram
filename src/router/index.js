@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
+import Chat from "../views/Chat.vue";
 
 Vue.use(VueRouter);
 
@@ -9,6 +10,14 @@ const routes = [
     path: "/",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/chat",
+    name: "chat",
+    component: Chat,
+    meta: {
+      requiresAuth: true,
+    },
   },
   //{
   //path: "/about",

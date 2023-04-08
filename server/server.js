@@ -3,7 +3,7 @@ import express from "express";
 import { Server } from "socket.io";
 import http from "http";
 import { api } from "./routes/routes.js";
-import Yup from "yup";
+import helmet from "helmet";
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +12,8 @@ const io = new Server(server);
 
 app.use("/api", api);
 app.use(express.json());
+app.use(helmet());
+app.use(express.urlencoded({ extended: false }));
 
 io.on("connection", (socket) => {
   console.log("a user connected");

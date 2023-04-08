@@ -53,6 +53,10 @@
         </b-input-group>
       </b-form-group>
 
+      <div class="mt-3" style="color: brown" v-if="errorMsg">
+          {{ errorMsg }}
+        </div>
+
       <div class="d-flex justify-content-evenly">
         <div class="login-button mt-4 mb-4">
           <b-button
@@ -89,6 +93,7 @@ export default {
       passwordCheck: "",
       email: "",
       showPass: false,
+      errorMsg: "",
     };
   },
   methods: {
@@ -113,6 +118,11 @@ export default {
           passwordCheck: this.passwordCheck,
         });
         let response = await user.signup(isValid);
+        if (response.success === true) {
+          this.$emit("signup-success");
+        } else {
+          this.errorMsg = response.message;
+        }
         console.log(response);
       } catch (error) {
         console.log(error);

@@ -1,6 +1,7 @@
 import Yup from "yup";
 import db from "../database/database.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function validateLogin(req, res, next) {
   const loginSchema = Yup.object().shape({
@@ -90,9 +91,10 @@ export async function getUserFromDatabase(req, res) {
         .status(400)
         .json({ success: false, message: "Invalid username or password" });
     } else if (passwordMatch) {
+      const token = jwt.sign({ id: getUser.id }, process.env.JWT_SECRET);
       return res
         .status(400)
-        .json({ success: false, message: "Login successful!" });
+        .json({ success: true, message: "Login successful!", token });
     }
   } catch (error) {
     return res

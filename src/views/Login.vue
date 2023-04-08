@@ -4,11 +4,13 @@
     <component
       :is="renderLogin ? 'ChatLogin' : 'ChatSignup'"
       @render-signup="renderSignup"
+      @login-success="routeLogin"
+      @signup-success="rendersLogin"
     />
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import ChatLogin from "../components/ChatLogin.vue";
 import ChatSignup from "../components/ChatSignup.vue";
 
@@ -26,6 +28,12 @@ export default {
   methods: {
     renderSignup() {
       this.renderLogin = false;
+    },
+    rendersLogin() {
+      this.renderLogin = true;
+    },
+    loginSuccess() {
+      this.$router.push("/chat");
     },
   },
 };

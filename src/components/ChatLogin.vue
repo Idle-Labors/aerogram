@@ -86,7 +86,12 @@ export default Vue.extend({
           password: this.password,
         });
         let response = await user.login(isValid);
-        console.log(response);
+        if (response.success === true) {
+          localStorage.setItem("token", response.data.token);
+          this.$emit("login-success");
+        } else {
+          this.errorMsg = response.message;
+        }
       } catch (error) {
         console.log(error);
       }
