@@ -87,7 +87,8 @@ export default Vue.extend({
         });
         let response = await user.login(isValid);
         if (response.success === true) {
-          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("idleChatToken", response.data.token);
+          //document.cookie = `token=${response.data.token}; Path=/; HttpOnly`;
           this.$emit("login-success");
         } else {
           this.errorMsg = response.message;
@@ -106,7 +107,7 @@ export default Vue.extend({
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: rgb(118, 160, 118);
+  background: rgb(176, 196, 207);
   box-shadow: -7px -7px 9px #dfded5, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;

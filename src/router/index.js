@@ -8,12 +8,12 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "login",
+    name: "Login",
     component: Login,
   },
   {
     path: "/chat",
-    name: "chat",
+    name: "Chat",
     component: Chat,
     meta: {
       requiresAuth: true,
@@ -32,6 +32,12 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem("idleChatToken");
+  if (to.name !== "Login" && !isAuthenticated) next({ name: "Login" });
+  else next();
 });
 
 export default router;

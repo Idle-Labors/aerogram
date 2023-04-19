@@ -1,9 +1,21 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <Navbar />
+    <p>Your content goes here.</p>
   </div>
 </template>
-<script></script>
-<style scoped></style>
+<script>
+import Navbar from "../components/Navbar.vue";
 
-//90, 125, 115;
+export default {
+  data() {
+    return {
+      
+    };
+  },
+  name: "chat",
+  components: {
+    Navbar,
+}}
+</script>
+<style></style>

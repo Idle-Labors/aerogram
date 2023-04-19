@@ -4,7 +4,7 @@ import {
   validateLogin,
   addUserToDatabase,
   getUserFromDatabase,
-} from "./routes-auth";
+} from "./routes-auth.js";
 export const api = express.Router();
 
 api.post("/signup", validateSignup, addUserToDatabase);

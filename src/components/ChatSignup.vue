@@ -15,7 +15,7 @@
           required
           v-model="email"
           type="email"
-          placeholder="Enter Username"
+          placeholder="Enter Email"
         />
       </b-form-group>
 
@@ -54,8 +54,8 @@
       </b-form-group>
 
       <div class="mt-3" style="color: brown" v-if="errorMsg">
-          {{ errorMsg }}
-        </div>
+        {{ errorMsg }}
+      </div>
 
       <div class="d-flex justify-content-evenly">
         <div class="login-button mt-4 mb-4">
@@ -68,11 +68,7 @@
           >
         </div>
         <div class="login-button mt-4 mb-4">
-          <b-button
-            variant="light"
-            class="mx-3"
-            @click="signupValidate"
-            type="submit"
+          <b-button variant="light" class="mx-3" @click="cancel" type="submit"
             >Cancel</b-button
           >
         </div>
@@ -82,7 +78,6 @@
 </template>
 
 <script>
-import Yup from "yup";
 import { user } from "../router/api";
 
 export default {
@@ -98,35 +93,24 @@ export default {
   },
   methods: {
     async signupValidate() {
-      const signupSchema = Yup.object().shape({
-        username: Yup.string()
-          .required("Username Required")
-          .max(18, "You reached the maximum number of characters"),
-        email: Yup.string().email("Invalid email").required("Email Required"),
-        password: Yup.string()
-          .required("Password Required")
-          .max(20, "You reached the maximum number of characters"),
-        passwordCheck: Yup.string()
-          .required("Confirm Password Required")
-          .oneOf([Yup.ref("password")], "Passwords must match"),
-      });
       try {
-        let isValid = await signupSchema.validate({
+        let response = await user.signup({
           username: this.username,
           email: this.email,
           password: this.password,
           passwordCheck: this.passwordCheck,
         });
-        let response = await user.signup(isValid);
-        if (response.success === true) {
+        if (response.data.success === true) {
           this.$emit("signup-success");
         } else {
           this.errorMsg = response.message;
         }
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
+    },
+    cancel() {
+      this.$emit("signup-cancel");
     },
   },
 };

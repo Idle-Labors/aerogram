@@ -3,8 +3,8 @@
     <div class="img-placeholder"></div>
     <component
       :is="renderLogin ? 'ChatLogin' : 'ChatSignup'"
-      @render-signup="renderSignup"
-      @login-success="routeLogin"
+      @render-signup="rendersSignup"
+      @login-success="loginSuccess"
       @signup-success="rendersLogin"
     />
   </div>
@@ -26,7 +26,7 @@ export default {
     ChatSignup,
   },
   methods: {
-    renderSignup() {
+    rendersSignup() {
       this.renderLogin = false;
     },
     rendersLogin() {

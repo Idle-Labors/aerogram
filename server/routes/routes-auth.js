@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export async function validateLogin(req, res, next) {
+  console.log(req.body);
   const loginSchema = Yup.object().shape({
     username: Yup.string()
       .required("Username Required")
@@ -21,6 +22,7 @@ export async function validateLogin(req, res, next) {
 }
 
 export async function validateSignup(req, res, next) {
+  console.log(req.body);
   const signupSchema = Yup.object().shape({
     username: Yup.string()
       .required("Username Required")
@@ -37,7 +39,8 @@ export async function validateSignup(req, res, next) {
     await signupSchema.validate(req.body);
     next();
   } catch (err) {
-    res.status(400).json({ message: "Error" });
+    console.log(req.body);
+    res.status(400).json({ message: err.message });
   }
 }
 
@@ -54,7 +57,8 @@ export async function addUserToDatabase(req, res) {
         .status(400)
         .json({ success: false, message: "Username or email already exists" });
     } else {
-      const hashedPassword = await bcrypt.hash(password);
+      const hashedPassword = await bcrypt.hash(password, 5);
+      console.log(hashedPassword);
       const result = await db.query(
         "INSERT INTO users.user_info (username, email, password) VALUES ($1, $2, $3) RETURNING *",
         [username, email, hashedPassword]
@@ -67,8 +71,8 @@ export async function addUserToDatabase(req, res) {
     }
   } catch (error) {
     return res.status(400).json({
-      success: true,
-      message: "Failed",
+      success: false,
+      message: "Failed!",
     });
   }
 }
@@ -85,15 +89,17 @@ export async function getUserFromDatabase(req, res) {
         .status(400)
         .json({ success: false, message: "User does not exist" });
     }
-    const passwordMatch = bcrypt.compare(password, getUser.rows[0].password);
-    if (!passwordMatch) {
+    const isPassword = bcrypt.compare(password, getUser.rows[0].password);
+    if (!isPassword) {
       return res
         .status(400)
         .json({ success: false, message: "Invalid username or password" });
-    } else if (passwordMatch) {
-      const token = jwt.sign({ id: getUser.id }, process.env.JWT_SECRET);
+    } else if (isPassword) {
+      const token = jwt.sign({ id: getUser.id }, process.env.JWT_SECRET, {
+        expiresIn: "3h",
+      });
       return res
-        .status(400)
+        .status(200)
         .json({ success: true, message: "Login successful!", token });
     }
   } catch (error) {

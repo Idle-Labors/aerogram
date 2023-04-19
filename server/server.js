@@ -1,21 +1,30 @@
 //import 'dotenv/config'
 import express from "express";
-import { Server } from "socket.io";
 import http from "http";
 import { api } from "./routes/routes.js";
 import helmet from "helmet";
+import io from "socket.io";
+import cors from "cors";
 
 const app = express();
 const server = http.createServer(app);
 const port = process.env.port || 3000;
-const io = new Server(server);
+const socketIo = io(server);
 
-app.use("/api", api);
+app.options("*", cors(), (req, res) => {
+  res.header("Access-Control-Allow-Methods", "POST");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.send();
+});
+
+app.use(cors());
+
 app.use(express.json());
+app.use("/", api);
 app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 
-io.on("connection", (socket) => {
+socketIo.on("connection", (socket) => {
   console.log("a user connected");
 });
 
