@@ -15,9 +15,9 @@ const routes = [
     path: "/chat",
     name: "Chat",
     component: Chat,
-    meta: {
+    /*meta: {
       requiresAuth: true,
-    },
+    },*/
   },
   //{
   //path: "/about",
@@ -33,11 +33,18 @@ const routes = [
 const router = new VueRouter({
   routes,
 });
-
+//this logic should be fixed up for sure
+/*
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem("idleChatToken");
-  if (to.name !== "Login" && !isAuthenticated) next({ name: "Login" });
-  else next();
+  if (to.name !== "Login" && !isAuthenticated) {
+    next({ name: "Login" });
+  } else if (to.name === "Login" && isAuthenticated) {
+    next({ name: "Chat" });
+  } else {
+    next();
+  }
 });
+*/
 
 export default router;

@@ -54,7 +54,6 @@
 
 <script>
 import Vue from "vue";
-import Yup from "yup";
 import { user } from "../router/api";
 
 export default Vue.extend({
@@ -72,21 +71,12 @@ export default Vue.extend({
       this.$emit("render-signup");
     },
     async loginValidate() {
-      const loginSchema = Yup.object().shape({
-        username: Yup.string()
-          .required("Username Required")
-          .max(18, "You reached the maximum number of characters"),
-        password: Yup.string()
-          .required("Password Required")
-          .max(20, "You reached the maximum number of characters"),
-      });
       try {
-        let isValid = await loginSchema.validate({
+        let response = await user.login({
           username: this.username,
           password: this.password,
         });
-        let response = await user.login(isValid);
-        if (response.success === true) {
+        if (response.data.success === true) {
           localStorage.setItem("idleChatToken", response.data.token);
           //document.cookie = `token=${response.data.token}; Path=/; HttpOnly`;
           this.$emit("login-success");

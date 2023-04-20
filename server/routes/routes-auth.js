@@ -90,6 +90,7 @@ export async function getUserFromDatabase(req, res) {
         .json({ success: false, message: "User does not exist" });
     }
     const isPassword = bcrypt.compare(password, getUser.rows[0].password);
+    console.log("Password Commpare Passed");
     if (!isPassword) {
       return res
         .status(400)
@@ -106,5 +107,19 @@ export async function getUserFromDatabase(req, res) {
     return res
       .status(500)
       .json({ success: false, message: "Internal server error occured" });
+  }
+}
+
+export function verifyToken(req, res, next) {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized access" });
+  }
+  try {
+    const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verifiedToken;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 }
