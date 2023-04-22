@@ -29,7 +29,7 @@
 
       <div class="login-button mt-4 mb-4">
         <b-button
-          variant="dark"
+          variant="secondary"
           class="mx-3"
           @click="loginValidate"
           type="submit"
@@ -97,13 +97,13 @@ export default Vue.extend({
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: rgb(176, 196, 207);
-  box-shadow: -7px -7px 9px #dfded5, 7px 7px 9px #ffffff;
+  background: #282b30;
+  color: #7aa6e9;
+  box-shadow: -7px -7px 9px #c4c3ba, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;
   padding: 1rem;
 }
-
 .forgot-create-links a {
   text-decoration: none;
 }

@@ -1,15 +1,15 @@
 <template>
   <div>
     <b-card class="custom-card">
-      <b-form-group label="Enter Channel Name:">
-        <b-form-input required type="text" v-model="channel" />
+      <b-form-group label="User To Message:">
+        <b-form-input required type="text" v-model="username" />
       </b-form-group>
 
       <div class="login-button mt-4">
         <b-button
           variant="secondary"
           class="mx-3"
-          @click="addChannelToList"
+          @click="addUserToList"
           type="submit"
           >Add</b-button
         >
@@ -28,14 +28,14 @@ import { user } from "../router/api";
 export default Vue.extend({
   data() {
     return {
-      channel: "",
+      username: "",
       errorMsg: "",
     };
   },
   components: {},
   methods: {
-    addChannelToList() {
-      this.$emit("close-addChannel");
+    addUserToList() {
+      this.$emit("close-addUser");
     },
   },
 });

@@ -1,13 +1,17 @@
 <template>
   <div>
-    <p v-b-toggle.collapse-3 class="h4 mb-2 flex-row">
-      <b-icon icon="chat-text-fill"></b-icon>
-      Direct Messages
+    <p v-b-toggle.collapse-chan class="h5 mb-2 flex-row text-color">
+      <b-icon icon="hash"></b-icon>
+      Channels
     </p>
-    <b-collapse visible id="collapse-3">
-      <p>
-        <b-icon icon="circle-fill" variant="danger"></b-icon>
-        Username
+    <b-collapse id="collapse-chan" visible>
+      <p class="smaller-text">
+        <b-icon icon="hash"></b-icon>
+        Chuck
+      </p>
+      <p class="smaller-text">
+        <b-icon icon="hash"></b-icon>
+        Sneed
       </p>
     </b-collapse>
   </div>
@@ -23,4 +27,14 @@ export default Vue.extend({
 });
 </script>
 <style>
+.smaller-text {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+.smaller-icon {
+  font-size: 0.7rem;
+}
+.text-color {
+  color: #7aa6e9;
+}
 </style>

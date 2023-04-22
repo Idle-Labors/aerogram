@@ -48,7 +48,7 @@ export default {
   color: #2c3e50;
 }
 .img-placeholder {
-  background-image: url(../assets/login2.png);
+  background-image: url(../assets/login51.webp);
   height: 12rem;
 }
 </style>
