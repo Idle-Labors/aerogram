@@ -1,15 +1,18 @@
 <template>
   <div>
-    <p v-b-toggle.collapse-chan class="h5 mb-2 flex-row text-color">
+    <p
+      v-b-toggle.collapse-chan
+      class="sidebar-item h5 mb-2 flex-row text-color"
+    >
       <b-icon icon="hash"></b-icon>
       Channels
     </p>
     <b-collapse id="collapse-chan" visible>
-      <p class="smaller-text">
+      <p class="smaller-text sidebar-item text-color">
         <b-icon icon="hash"></b-icon>
         Chuck
       </p>
-      <p class="smaller-text">
+      <p class="smaller-text sidebar-item text-color">
         <b-icon icon="hash"></b-icon>
         Sneed
       </p>
@@ -27,6 +30,11 @@ export default Vue.extend({
 });
 </script>
 <style>
+.sidebar-item:hover {
+  background-color: rgba(90, 125, 115, 0.521);
+  border-radius: 10px;
+  size: 100%;
+}
 .smaller-text {
   font-size: 0.9rem;
   margin-bottom: 0;
@@ -35,6 +43,6 @@ export default Vue.extend({
   font-size: 0.7rem;
 }
 .text-color {
-  color: #7aa6e9;
+  color: aliceblue;
 }
 </style>

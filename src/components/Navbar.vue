@@ -2,7 +2,7 @@
   <div>
     <b-sidebar
       visible
-      id="sidebar-no-header"
+      id="sidebar"
       text-variant="light"
       width="220px"
       aria-labelledby="sidebar-no-header-title"
@@ -21,7 +21,7 @@
           <b-button-group>
             <b-button
               size=""
-              variant="outline-light"
+              variant="outline-success"
               class="text-color"
               @click="addChannel"
             >
@@ -29,7 +29,7 @@
                 <b-icon icon="plus-circle-fill"></b-icon> Channel
               </span>
             </b-button>
-            <b-button size="" variant="outline-light" @click="addUser">
+            <b-button size="" variant="outline-success" @click="addUser">
               <span class="text-color">
                 <b-icon icon="person-plus-fill"></b-icon> Message
               </span>
@@ -61,12 +61,25 @@ export default Vue.extend({
 </script>
 
 <style>
+.footer .btn-outline-success {
+  border-color: rgba(90, 125, 115);
+}
+.footer .btn-outline-success:hover {
+  color: #fff;
+  background-color: rgba(90, 125, 115);
+  border-color: rgba(90, 125, 115);
+}
 .header {
   background-color: rgba(90, 125, 115);
 }
-
+.sidebar-item:hover {
+  background-color: rgba(90, 125, 115, 0.521);
+  border-radius: 10px;
+  size: 100%;
+}
 .footer {
   background-color: #282b30;
+  border-bottom-right-radius: 15px;
 }
 
 .img {

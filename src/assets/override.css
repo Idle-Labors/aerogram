@@ -1,3 +1,4 @@
 .b-sidebar-body {
-    background-color: #282b30
+    background-color: #282b30;
+    border-top-right-radius: 15px;
 }
