@@ -3,17 +3,15 @@ import express from "express";
 import http from "http";
 import { api } from "./routes/routes.js";
 import helmet from "helmet";
-import io from "socket.io";
 import cors from "cors";
-import redisClient from "./redis.js";
+//import redisClient from "./redis.js";
 import rateLimit from "express-rate-limit";
+import { Server } from "socket.io";
 
-/*{origin: "http://localhost:8080",
-credentials: true} <--- Maybe */
 const corsOptions = {
   origin: "http://localhost:8080",
   methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
@@ -23,7 +21,8 @@ const limiter = rateLimit({
 const app = express();
 const server = http.createServer(app);
 const port = process.env.port || 3000;
-const socketIo = io(server);
+//Create new instance of Socket.Io running on top of express server
+const socketIo = new Server(server);
 
 //CLEAN AND/OR FIX UP CORS
 /*
@@ -40,8 +39,9 @@ app.use(cors(corsOptions));
 app.use("/", api);
 app.use(helmet());
 
+//socketIo.use((socket, next) => {})
 socketIo.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log(socket.id);
 });
 
 server.listen(port, () => console.log(`Server running on ${port}`));

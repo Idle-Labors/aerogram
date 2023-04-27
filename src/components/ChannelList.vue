@@ -10,11 +10,11 @@
     <b-collapse id="collapse-chan" visible>
       <p class="smaller-text sidebar-item text-color">
         <b-icon icon="hash"></b-icon>
-        Chuck
+        SomeChannel
       </p>
       <p class="smaller-text sidebar-item text-color">
         <b-icon icon="hash"></b-icon>
-        Sneed
+        AnotherChannel
       </p>
     </b-collapse>
   </div>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ChatContainer />
     <Navbar>
       <template v-slot:DirectMessageList>
         <DirectMessageList />
@@ -27,6 +28,7 @@ import DirectMessageList from "@/components/DirectMessageList.vue";
 import ChannelList from "@/components/ChannelList.vue";
 import ChatAddDM from "@/components/ChatAddDM.vue";
 import ChannelCreate from "@/components/ChannelCreate.vue";
+import ChatContainer from "@/components/ChatContainer.vue";
 
 export default {
   data() {
@@ -42,10 +44,11 @@ export default {
     ChannelList,
     ChatAddDM,
     ChannelCreate,
+    ChatContainer,
   },
   methods: {
     rendersAddUser() {
-      console.log('check')
+      console.log("check");
       this.addUser = true;
     },
     closeAddUser() {
