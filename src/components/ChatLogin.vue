@@ -77,7 +77,8 @@ export default Vue.extend({
           password: this.password,
         });
         if (response.data.success === true) {
-          localStorage.setItem("idleChatToken", response.data.token);
+          localStorage.setItem("aeroChatToken", response.data.token);
+          sessionStorage.setItem("aeroUserName", response.data.user);
           //document.cookie = `token=${response.data.token}; Path=/; HttpOnly`;
           this.$emit("login-success");
         } else {

@@ -22,7 +22,7 @@ const app = express();
 const server = http.createServer(app);
 const port = process.env.port || 3000;
 //Create new instance of Socket.Io running on top of express server
-const socketIo = new Server(server);
+const socketIo = new Server(server, { cors: corsOptions });
 
 //CLEAN AND/OR FIX UP CORS
 /*
@@ -41,7 +41,10 @@ app.use(helmet());
 
 //socketIo.use((socket, next) => {})
 socketIo.on("connection", (socket) => {
-  console.log(socket.id);
+  socket.on("message", (messageData) => {
+    console.log(`Received message from client: ${messageData}`);
+    socket.broadcast.emit("message", messageData);
+  });
 });
 
 server.listen(port, () => console.log(`Server running on ${port}`));

@@ -57,8 +57,8 @@ export async function addUserToDatabase(req, res) {
         .status(400)
         .json({ success: false, message: "Username or email already exists" });
     } else {
-      const hashedPassword = await bcrypt.hash(password, 5);
-      console.log(hashedPassword);
+      //SALT ME
+      const hashedPassword = await bcrypt.hash(password, 10);
       const result = await db.query(
         "INSERT INTO users.user_info (username, email, password) VALUES ($1, $2, $3) RETURNING *",
         [username, email, hashedPassword]
@@ -96,12 +96,15 @@ export async function getUserFromDatabase(req, res) {
         .status(400)
         .json({ success: false, message: "Invalid username or password" });
     } else if (isPassword) {
-      const token = jwt.sign({ id: getUser.id }, process.env.JWT_SECRET, {
-        expiresIn: "3h",
+      const token = jwt.sign({ sub: getUser.id }, process.env.JWT_SECRET, {
+        expiresIn: "1m",
       });
-      return res
-        .status(200)
-        .json({ success: true, message: "Login successful!", token });
+      return res.status(200).json({
+        success: true,
+        message: "Login successful!",
+        user: getUser.rows[0].username,
+        token,
+      });
     }
   } catch (error) {
     return res

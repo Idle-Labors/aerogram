@@ -1,56 +1,84 @@
 <template>
   <div class="chat-container">
-    <div class="container">
-      <img src="/w3images/bandmember.jpg" alt="Avatar" />
-      <p>Hello. How are you today?</p>
-      <span class="time-right">11:00</span>
+    <div
+      v-for="message in messages"
+      :key="message.id"
+      :class="{ container: true, darker: message.author != author }"
+    >
+      <p>{{ message.text }}</p>
+      <span
+        :class="{
+          'time-right': message.author !== author,
+          'time-left': message.author === author,
+        }"
+      >
+        {{ message.timestamp }} - {{ message.author }}
+      </span>
     </div>
 
-    <div class="container darker">
-      <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" />
-      <p>Hey! I'm fine. Thanks for asking!</p>
-      <span class="time-left">11:01</span>
-    </div>
-
-    <div class="container">
-      <img src="/w3images/bandmember.jpg" alt="Avatar" />
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum.</p>
-      <span class="time-right">11:02</span>
-    </div>
-
-    <div class="container darker">
-      <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" />
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-      <span class="time-left">11:05</span>
-    </div>
     <div class="footer">
       <label for="msg">Message:</label>
-      <input type="text" class="input-field" id="usr" />
-      <img src="@/assets/paper-plane-send.svg" class="img-resize" />
+      <input
+        type="text"
+        class="input-field"
+        id="usr"
+        v-model="text"
+        @keyup.enter="sendMessage"
+      />
+      <img
+        src="@/assets/paper-plane-send.svg"
+        class="img-resize"
+        @click="sendMessage"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+import io from "socket.io-client";
+
 export default {
   data() {
     return {
+      author: sessionStorage.getItem("aeroUserName"),
+      text: "",
+      socket: null,
+      timestamp: new Date().toLocaleTimeString(),
       messages: [
         { id: 1, author: "Alice", text: "Hello!" },
         { id: 2, author: "Bob", text: "Hi Alice!" },
       ],
-      newMessage: "",
     };
+  },
+  mounted() {
+    this.socket = io("http://localhost:3000");
+    this.socket.on("connect", () => {
+      console.log("Connected/Client!");
+    });
+    this.socket.on("message", (message) => {
+      console.log(`Received ${message}`);
+      this.messages.push(message);
+    });
   },
   methods: {
     sendMessage() {
-      const message = {
-        id: Date.now(),
-        author: "You",
-        text: this.newMessage,
-      };
-      this.messages.push(message);
-      this.newMessage = "";
+      if (this.text) {
+        const message = {
+          id: uuidv4(),
+          author: this.author,
+          text: this.text,
+          timestamp: new Date().toLocaleTimeString(),
+        };
+        this.socket.emit("message", message);
+        console.log("message sent");
+      }
+      this.messages.push({
+        author: this.author,
+        text: this.text,
+        timestamp: this.timestamp,
+      });
+      this.text = "";
     },
   },
 };
@@ -62,8 +90,9 @@ export default {
   height: 2rem;
   margin-left: 0.5rem;
 }
+
 .input-field {
-  width: 90%;
+  width: 75%;
   margin-left: 1rem;
   margin-bottom: 1rem;
   border-radius: 10px;
@@ -79,6 +108,7 @@ export default {
   color: black;
   text-align: center;
 }
+
 .chat-container {
   display: flex;
   flex-direction: column;
