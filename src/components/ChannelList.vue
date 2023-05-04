@@ -8,6 +8,15 @@
       Channels
     </p>
     <b-collapse id="collapse-chan" visible>
+      <div
+        v-for="channel in channels"
+        :key="channel"
+        @click="joinChannel(channel)"
+      >
+        <p class="smaller-text sidebar-item text-color">
+          <b-icon icon="hash"></b-icon> {{ channel }}
+        </p>
+      </div>
       <p class="smaller-text sidebar-item text-color">
         <b-icon icon="hash"></b-icon>
         SomeChannel
@@ -21,12 +30,23 @@
 </template>
 <script>
 import Vue from "vue";
+import socket from "@/modules/socket.js";
+
 export default Vue.extend({
-  data() {
-    return {};
+  props: {
+    channels: {
+      type: Array,
+      default: () => [],
+    },
   },
+  data() {},
   components: {},
-  methods: {},
+  methods: {
+    joinChannel(channel) {
+      socket.emit("join", channel);
+      console.log("joined");
+    },
+  },
 });
 </script>
 <style>
@@ -35,13 +55,16 @@ export default Vue.extend({
   border-radius: 10px;
   size: 100%;
 }
+
 .smaller-text {
   font-size: 0.9rem;
   margin-bottom: 0;
 }
+
 .smaller-icon {
   font-size: 0.7rem;
 }
+
 .text-color {
   color: aliceblue;
 }

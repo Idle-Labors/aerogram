@@ -22,7 +22,7 @@ const app = express();
 const server = http.createServer(app);
 const port = process.env.port || 3000;
 //Create new instance of Socket.Io running on top of express server
-const socketIo = new Server(server, { cors: corsOptions });
+const socket = new Server(server, { cors: corsOptions });
 
 //CLEAN AND/OR FIX UP CORS
 /*
@@ -40,10 +40,20 @@ app.use("/", api);
 app.use(helmet());
 
 //socketIo.use((socket, next) => {})
-socketIo.on("connection", (socket) => {
+socket.on("connection", (socket) => {
   socket.on("message", (messageData) => {
     console.log(`Received message from client: ${messageData}`);
     socket.broadcast.emit("message", messageData);
+  });
+
+  socket.on("createRoom", (roomName) => {
+    // Join the room
+    socket.join(roomName);
+
+    // Broadcast to everyone in the room
+    socket
+      .to(roomName)
+      .emit("message", `A new room has been created: ${roomName}`);
   });
 });
 

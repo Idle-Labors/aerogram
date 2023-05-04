@@ -36,14 +36,13 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
-import io from "socket.io-client";
+import socket from "@/modules/socket.js";
 
 export default {
   data() {
     return {
       author: sessionStorage.getItem("aeroUserName"),
       text: "",
-      socket: null,
       timestamp: new Date().toLocaleTimeString(),
       messages: [
         { id: 1, author: "Alice", text: "Hello!" },
@@ -52,11 +51,10 @@ export default {
     };
   },
   mounted() {
-    this.socket = io("http://localhost:3000");
-    this.socket.on("connect", () => {
-      console.log("Connected/Client!");
+    socket.on("connect", () => {
+      console.log(`Connected ${socket.id}`);
     });
-    this.socket.on("message", (message) => {
+    socket.on("message", (message) => {
       console.log(`Received ${message}`);
       this.messages.push(message);
     });
@@ -70,7 +68,7 @@ export default {
           text: this.text,
           timestamp: new Date().toLocaleTimeString(),
         };
-        this.socket.emit("message", message);
+        socket.emit("message", message);
         console.log("message sent");
       }
       this.messages.push({

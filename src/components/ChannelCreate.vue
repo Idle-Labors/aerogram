@@ -24,6 +24,7 @@
 <script>
 import Vue from "vue";
 import { user } from "../router/api";
+import socket from "@/modules/socket.js";
 
 export default Vue.extend({
   data() {
@@ -35,6 +36,9 @@ export default Vue.extend({
   components: {},
   methods: {
     addChannelToList() {
+      console.log(this.channel);
+      socket.emit("createRoom", this.channel);
+      this.$emit("create-newChannel", this.channel);
       this.$emit("close-addChannel");
     },
   },

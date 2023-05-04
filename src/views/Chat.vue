@@ -6,7 +6,7 @@
         <DirectMessageList />
       </template>
       <template v-slot:ChannelList>
-        <ChannelList />
+        <ChannelList :channels="channels" />
       </template>
     </Navbar>
     <component
@@ -18,6 +18,7 @@
       :is="addChannel ? 'ChannelCreate' : false"
       @render-addChannel="rendersAddChannel"
       @close-addChannel="closeAddChannel"
+      @create-newChannel="createChannel"
     />
   </div>
 </template>
@@ -34,7 +35,8 @@ export default {
   data() {
     return {
       addUser: false,
-      addChannel: false,
+      addChannel: true,
+      channels: [],
     };
   },
   name: "chat",
@@ -59,6 +61,12 @@ export default {
     },
     closeAddChannel() {
       this.addChannel = false;
+    },
+    createChannel(channelName) {
+      console.log('in createChannel')
+      this.channels.push(channelName);
+      console.log('pushed channel')
+      console.log(this.channels)
     },
   },
 };
