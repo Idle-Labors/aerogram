@@ -9,6 +9,11 @@
         Direct Messages
       </p>
       <b-collapse id="collapse-dm" visible class="mb-2">
+        <div v-for="user in users" :key="user" @click="joinChannel(user)">
+          <p class="smaller-text sidebar-item text-color">
+            <b-icon icon="hash"></b-icon> {{ user }}
+          </p>
+        </div>
         <p class="smaller-text sidebar-item text-color">
           <b-icon icon="circle-fill" variant="danger"></b-icon>
           Username
@@ -23,12 +28,25 @@
 </template>
 <script>
 import Vue from "vue";
+import socket from "@/modules/socket.js";
+
 export default Vue.extend({
+  props: {
+    users: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {};
   },
   components: {},
-  methods: {},
+  methods: {
+    joinChannel(user) {
+      socket.emit("join", user);
+      console.log("joined");
+    },
+  },
 });
 </script>
 <style>

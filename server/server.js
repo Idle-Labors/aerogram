@@ -4,9 +4,10 @@ import http from "http";
 import { api } from "./routes/routes.js";
 import helmet from "helmet";
 import cors from "cors";
-//import redisClient from "./redis.js";
+import { redisClient, redisGetAsync, redisSetAsync } from "./redis";
 import rateLimit from "express-rate-limit";
 import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
 
 const corsOptions = {
   origin: "http://localhost:8080",
@@ -39,8 +40,12 @@ app.use(cors(corsOptions));
 app.use("/", api);
 app.use(helmet());
 
+//startHERE
 //socketIo.use((socket, next) => {})
 socket.on("connection", (socket) => {
+  const token = socket.handshake.query.token;
+  const decodedToken = jwt.decode(token, { complete: true });
+  const userId = decodedToken.payload.sub;
   socket.on("message", (messageData) => {
     console.log(`Received message from client: ${messageData}`);
     socket.broadcast.emit("message", messageData);
@@ -58,3 +63,4 @@ socket.on("connection", (socket) => {
 });
 
 server.listen(port, () => console.log(`Server running on ${port}`));
+

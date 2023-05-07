@@ -24,6 +24,7 @@
 <script>
 import Vue from "vue";
 import { user } from "../router/api";
+import socket from "@/modules/socket.js";
 
 export default Vue.extend({
   data() {
@@ -35,6 +36,8 @@ export default Vue.extend({
   components: {},
   methods: {
     addUserToList() {
+      socket.emit("addUser", this.username);
+      this.$emit("create-addUser", this.username);
       this.$emit("close-addUser");
     },
   },

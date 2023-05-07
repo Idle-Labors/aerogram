@@ -98,7 +98,7 @@ export async function getUserFromDatabase(req, res) {
     } else if (isPassword) {
       const token = jwt.sign({ sub: getUser.id }, process.env.JWT_SECRET, {
         expiresIn: "1m",
-      });
+      }); console.log('change token time')
       return res.status(200).json({
         success: true,
         message: "Login successful!",

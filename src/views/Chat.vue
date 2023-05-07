@@ -3,7 +3,7 @@
     <ChatContainer />
     <Navbar>
       <template v-slot:DirectMessageList>
-        <DirectMessageList />
+        <DirectMessageList :users="users" />
       </template>
       <template v-slot:ChannelList>
         <ChannelList :channels="channels" />
@@ -13,6 +13,7 @@
       :is="addUser ? 'ChatAddDM' : false"
       @render-addUser="rendersAddUser"
       @close-addUser="closeAddUser"
+      @create-addUser="createAddUser"
     />
     <component
       :is="addChannel ? 'ChannelCreate' : false"
@@ -35,8 +36,9 @@ export default {
   data() {
     return {
       addUser: false,
-      addChannel: true,
+      addChannel: false,
       channels: [],
+      users: [],
     };
   },
   name: "chat",
@@ -62,11 +64,15 @@ export default {
     closeAddChannel() {
       this.addChannel = false;
     },
+    createAddUser(username) {
+      console.log("in create user");
+      this.users.push(username);
+    },
     createChannel(channelName) {
-      console.log('in createChannel')
+      console.log("in createChannel");
       this.channels.push(channelName);
-      console.log('pushed channel')
-      console.log(this.channels)
+      console.log("pushed channel");
+      console.log(this.channels);
     },
   },
 };
