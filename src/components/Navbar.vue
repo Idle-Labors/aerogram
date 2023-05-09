@@ -79,7 +79,6 @@ export default Vue.extend({
 }
 .footer {
   background-color: #282b30;
-  border-bottom-right-radius: 15px;
 }
 
 .img {

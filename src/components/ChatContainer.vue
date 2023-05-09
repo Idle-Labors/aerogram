@@ -40,6 +40,12 @@ import { v4 as uuidv4 } from "uuid";
 import socket from "@/modules/socket.js";
 
 export default {
+  props: {
+    selectedChannel: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       author: sessionStorage.getItem("aeroUserName"),
@@ -55,16 +61,26 @@ export default {
     socket.on("connect", () => {
       console.log(`Connected ${socket.id}`);
     });
+
     socket.on("message", (message) => {
-      console.log(`Received ${message}`);
-      this.messages.push(message);
+      if (message.channel === this.selectedChannel) {
+        console.log(`Received ${message}`);
+        this.messages.push(message);
+      }
     });
+  },
+  watch: {
+    selectedChannel(newVal) {
+      // Clear the messages array when the selected channel changes
+      this.messages = [];
+    },
   },
   methods: {
     sendMessage() {
       if (this.text) {
         const message = {
           id: uuidv4(),
+          channel: this.selectedChannel,
           author: this.author,
           text: this.text,
           timestamp: new Date().toLocaleTimeString(),
@@ -94,7 +110,10 @@ export default {
   width: 75%;
   margin-left: 1rem;
   margin-bottom: 1rem;
-  border-radius: 10px;
+}
+
+input:focus {
+  outline: none;
 }
 
 .footer {
@@ -129,7 +148,7 @@ export default {
   display: block;
   max-width: 75%;
   padding-right: 1rem;
-  padding-top: .2rem;
+  padding-top: 0.2rem;
   text-align: right;
   margin: 10px 225px;
   margin-bottom: 1.5rem;
@@ -142,7 +161,7 @@ export default {
   max-width: 75%;
   margin-bottom: 1.5rem;
   padding-left: 1rem;
-  padding-top: .2rem;
+  padding-top: 0.2rem;
   text-align: left;
 }
 

@@ -14,14 +14,8 @@
             <b-icon icon="hash"></b-icon> {{ user }}
           </p>
         </div>
-        <p class="smaller-text sidebar-item text-color">
-          <b-icon icon="circle-fill" variant="danger"></b-icon>
-          Username
-        </p>
-        <p class="smaller-text sidebar-item text-color">
-          <b-icon icon="circle-fill" variant="success"></b-icon>
-          Another Username
-        </p>
+        <p class="smaller-text sidebar-item text-color">Username</p>
+        <p class="smaller-text sidebar-item text-color">Another Username</p>
       </b-collapse>
     </div>
   </div>

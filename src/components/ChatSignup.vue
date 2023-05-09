@@ -60,7 +60,7 @@
       <div class="d-flex justify-content-evenly">
         <div class="login-button mt-4 mb-4">
           <b-button
-            variant="dark"
+            variant="secondary"
             class="mx-3"
             @click="signupValidate"
             type="submit"
@@ -122,8 +122,8 @@ export default {
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: rgb(118, 160, 118);
-  box-shadow: -7px -7px 9px #dfded5, 7px 7px 9px #ffffff;
+  background: #282b30;
+  color: #7aa6e9;
   margin: 0 auto;
   margin-top: 2rem;
 }

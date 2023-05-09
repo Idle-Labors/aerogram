@@ -1,4 +1,11 @@
 .b-sidebar-body {
     background-color: #282b30;
-    border-top-right-radius: 15px;
+}
+.custom-card input:focus {
+    box-shadow: none;
+    outline: none;
+    border: none;
+  }
+input {
+    outline: none;
 }

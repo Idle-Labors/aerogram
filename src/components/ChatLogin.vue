@@ -10,7 +10,7 @@
         />
       </b-form-group>
 
-      <b-form-group class="mt-2" label="Password:">
+      <b-form-group class="mt-3" label="Password:">
         <b-input-group>
           <b-form-input
             required
@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <div class="forgot-create-links d-flex justify-content-evenly">
+      <div class="forgot-create-links d-flex justify-content-between">
         <b-link to="/forgotPassword" class="small text-muted"
           >Forgot Password</b-link
         >
@@ -100,7 +100,6 @@ export default Vue.extend({
   border: none;
   background: #282b30;
   color: #7aa6e9;
-  box-shadow: -7px -7px 9px #c4c3ba, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;
   padding: 1rem;

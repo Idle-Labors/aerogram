@@ -4,7 +4,8 @@ import http from "http";
 import { api } from "./routes/routes.js";
 import helmet from "helmet";
 import cors from "cors";
-import { redisClient, redisGetAsync, redisSetAsync } from "./redis";
+import redis from "redis";
+import db from "./database/database.js";
 import rateLimit from "express-rate-limit";
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
@@ -40,21 +41,25 @@ app.use(cors(corsOptions));
 app.use("/", api);
 app.use(helmet());
 
-//startHERE
-//socketIo.use((socket, next) => {})
+for (let i = 1; i <= 5; i++) {
+  const roomName = `room${i}`;
+  socket.of("/").adapter.rooms.set(roomName, new Set());
+}
 socket.on("connection", (socket) => {
-  const token = socket.handshake.query.token;
-  const decodedToken = jwt.decode(token, { complete: true });
-  const userId = decodedToken.payload.sub;
   socket.on("message", (messageData) => {
     console.log(`Received message from client: ${messageData}`);
     socket.broadcast.emit("message", messageData);
   });
 
+  socket.on("joinRoom", (roomName) => {
+    socket.join(roomName);
+    console.log(`User ${socket.id} joined room ${roomName}`);
+  });
+
   socket.on("createRoom", (roomName) => {
     // Join the room
     socket.join(roomName);
-
+    console.log(`joined ${roomName}`);
     // Broadcast to everyone in the room
     socket
       .to(roomName)
@@ -63,4 +68,3 @@ socket.on("connection", (socket) => {
 });
 
 server.listen(port, () => console.log(`Server running on ${port}`));
-

@@ -46,21 +46,23 @@ export async function validateSignup(req, res, next) {
 
 export async function addUserToDatabase(req, res) {
   const { username, email, password } = req.body;
-
   try {
+    console.log("before db query");
     const getUser = await db.query(
-      "SELECT * FROM users.user_info WHERE username = $1 OR email = $2",
+      "SELECT * FROM users.info WHERE username = $1 OR email = $2",
       [username, email]
     );
+    console.log("after db query");
     if (getUser.rowCount > 0) {
       return res
         .status(400)
         .json({ success: false, message: "Username or email already exists" });
     } else {
       //SALT ME
+      console.log("pw");
       const hashedPassword = await bcrypt.hash(password, 10);
       const result = await db.query(
-        "INSERT INTO users.user_info (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+        "INSERT INTO users.info (username, email, password) VALUES ($1, $2, $3) RETURNING *",
         [username, email, hashedPassword]
       );
       res.status(201).json({
@@ -70,6 +72,7 @@ export async function addUserToDatabase(req, res) {
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       success: false,
       message: "Failed!",
@@ -81,7 +84,7 @@ export async function getUserFromDatabase(req, res) {
   const { username, password } = req.body;
   try {
     const getUser = await db.query(
-      "SELECT * FROM users.user_info WHERE username = $1",
+      "SELECT * FROM users.info WHERE username = $1",
       [username]
     );
     if (getUser.rowCount == 0) {
@@ -98,7 +101,8 @@ export async function getUserFromDatabase(req, res) {
     } else if (isPassword) {
       const token = jwt.sign({ sub: getUser.id }, process.env.JWT_SECRET, {
         expiresIn: "1m",
-      }); console.log('change token time')
+      });
+      console.log("change token time");
       return res.status(200).json({
         success: true,
         message: "Login successful!",

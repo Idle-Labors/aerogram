@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="custom-card">
+    <b-card class="custom-card" @keyup.esc="closeModal">
       <b-form-group label="Enter Channel Name:">
         <b-form-input required type="text" v-model="channel" />
       </b-form-group>
@@ -35,6 +35,10 @@ export default Vue.extend({
   },
   components: {},
   methods: {
+    closeModal() {
+      this.$emit("close-addChannel");
+      console.log("emit close");
+    },
     addChannelToList() {
       console.log(this.channel);
       socket.emit("createRoom", this.channel);
@@ -53,7 +57,6 @@ export default Vue.extend({
   border: none;
   background: #282b30;
   color: #7aa6e9;
-  box-shadow: -7px -7px 9px #c4c3ba, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;
   padding: 1rem;

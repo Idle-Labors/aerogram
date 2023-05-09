@@ -39,11 +39,14 @@ export default Vue.extend({
       default: () => [],
     },
   },
-  data() {},
+  data() {
+    return {};
+  },
   components: {},
   methods: {
     joinChannel(channel) {
-      socket.emit("join", channel);
+      socket.emit("joinRoom", channel);
+      this.$emit("selectedChannel", channel);
       console.log("joined");
     },
   },

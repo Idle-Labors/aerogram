@@ -1,12 +1,15 @@
 <template>
   <div>
-    <ChatContainer />
+    <ChatContainer :selected-channel="selectedChannel" />
     <Navbar>
       <template v-slot:DirectMessageList>
         <DirectMessageList :users="users" />
       </template>
       <template v-slot:ChannelList>
-        <ChannelList :channels="channels" />
+        <ChannelList
+          :channels="channels"
+          @selectedChannel="selectedChannel = $event"
+        />
       </template>
     </Navbar>
     <component
@@ -35,10 +38,11 @@ import ChatContainer from "@/components/ChatContainer.vue";
 export default {
   data() {
     return {
-      addUser: false,
+      addUser: true,
       addChannel: false,
-      channels: [],
+      channels: ["Room1", "Room2", "Room3", "Room4", "Room5"],
       users: [],
+      selectedChannel: null,
     };
   },
   name: "chat",
@@ -59,7 +63,9 @@ export default {
       this.addUser = false;
     },
     rendersAddChannel() {
+      console.log("before");
       this.addChannel = true;
+      console.log("after");
     },
     closeAddChannel() {
       this.addChannel = false;
@@ -77,4 +83,5 @@ export default {
   },
 };
 </script>
+
 <style></style>

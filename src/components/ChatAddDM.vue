@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-card class="custom-card">
-      <b-form-group label="User To Message:">
+    <b-card class="custom-card" @keyup.esc="closeModal">
+      <b-form-group label="Room To Join:">
         <b-form-input required type="text" v-model="username" />
       </b-form-group>
 
@@ -35,8 +35,11 @@ export default Vue.extend({
   },
   components: {},
   methods: {
+    closeModal() {
+      this.$emit("close-addUser");
+    },
     addUserToList() {
-      socket.emit("addUser", this.username);
+      socket.emit("joinRoom", this.username);
       this.$emit("create-addUser", this.username);
       this.$emit("close-addUser");
     },
@@ -52,7 +55,6 @@ export default Vue.extend({
   border: none;
   background: #282b30;
   color: #7aa6e9;
-  box-shadow: -7px -7px 9px #c4c3ba, 7px 7px 9px #ffffff;
   margin: 0 auto;
   margin-top: 5rem;
   padding: 1rem;
