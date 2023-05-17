@@ -5,14 +5,26 @@
         <b-form-input required type="text" v-model="channel" />
       </b-form-group>
 
-      <div class="login-button mt-4">
-        <b-button
-          variant="secondary"
-          class="mx-3"
-          @click="addChannelToList"
-          type="submit"
-          >Add</b-button
-        >
+      <div class="d-flex justify-content-evenly">
+        <div class="login-button mt-4">
+          <b-button
+            variant="secondary"
+            class="mx-3"
+            @click="addChannelToList"
+            type="submit"
+            >Add</b-button
+          >
+        </div>
+        <div class="login-button mt-4">
+          <b-button
+            variant="light"
+            class="mx-3"
+            @click="closeModal"
+            type="submit"
+            >Cancel</b-button
+          >
+        </div>
+
         <div class="mt-3" style="color: brown" v-if="errorMsg">
           {{ errorMsg }}
         </div>

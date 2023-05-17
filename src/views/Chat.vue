@@ -1,7 +1,9 @@
 <template>
   <div>
-    <ChatContainer :selected-channel="selectedChannel" />
-    <Navbar>
+    <Navbar
+      @render-addUser="rendersAddUser"
+      @render-addChannel="rendersAddChannel"
+    >
       <template v-slot:DirectMessageList>
         <DirectMessageList :users="users" />
       </template>
@@ -12,15 +14,17 @@
         />
       </template>
     </Navbar>
+
+    <ChatContainer :selected-channel="selectedChannel" />
+
     <component
       :is="addUser ? 'ChatAddDM' : false"
-      @render-addUser="rendersAddUser"
       @close-addUser="closeAddUser"
       @create-addUser="createAddUser"
     />
+
     <component
       :is="addChannel ? 'ChannelCreate' : false"
-      @render-addChannel="rendersAddChannel"
       @close-addChannel="closeAddChannel"
       @create-newChannel="createChannel"
     />
@@ -38,7 +42,7 @@ import ChatContainer from "@/components/ChatContainer.vue";
 export default {
   data() {
     return {
-      addUser: true,
+      addUser: false,
       addChannel: false,
       channels: ["Room1", "Room2", "Room3", "Room4", "Room5"],
       users: [],

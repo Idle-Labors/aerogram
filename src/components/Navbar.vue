@@ -8,6 +8,7 @@
       aria-labelledby="sidebar-no-header-title"
       no-header
       shadow
+      no-close-on-esc
     >
       <h4 style="width: 100%" class="header">
         <img src="@/assets/paper-plane-fill-light.svg" class="img mt-4 mb-5" />
@@ -55,6 +56,7 @@ export default Vue.extend({
     },
     addChannel() {
       this.$emit("render-addChannel");
+      console.log("Emit success");
     },
   },
 });
