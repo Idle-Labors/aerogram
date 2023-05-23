@@ -8,3 +8,9 @@ export const user = {
     return axios.post("http://localhost:3000/signup", data);
   },
 };
+
+export const messages = {
+  get(channel) {
+    return axios.get(`http://localhost:3000/messages/${channel}`);
+  },
+};

@@ -38,6 +38,7 @@
 <script>
 import { v4 as uuidv4 } from "uuid";
 import socket from "@/modules/socket.js";
+import { messages } from "@/router/api.js";
 
 export default {
   props: {
@@ -68,14 +69,29 @@ export default {
         this.messages.push(message);
       }
     });
+
+    if (this.selectedChannel) {
+      this.fetchMessages();
+    }
   },
   watch: {
     selectedChannel(newVal) {
       // Clear the messages array when the selected channel changes
       this.messages = [];
+      this.fetchMessages();
     },
   },
   methods: {
+    async fetchMessages() {
+      try {
+        console.log(`sending to messages ${this.selectedChannel}`);
+        let response = await messages.get(this.selectedChannel);
+        console.log(response.data);
+        this.messages = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     sendMessage() {
       if (this.text) {
         const message = {

@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-import ChatLogin from "./components/ChatLogin.vue";
-import ChatSignup from "./components/ChatSignup.vue";
+import ChatLogin from "@/components/ChatLogin.vue";
+import ChatSignup from "@/components/ChatSignup.vue";
 
 export default {
   name: "App",

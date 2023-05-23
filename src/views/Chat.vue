@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "@/components/Navbar.vue";
 import DirectMessageList from "@/components/DirectMessageList.vue";
 import ChannelList from "@/components/ChannelList.vue";
 import ChatAddDM from "@/components/ChatAddDM.vue";

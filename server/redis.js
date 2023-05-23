@@ -1,9 +1,12 @@
-const redis = require("redis");
-const { promisify } = require("util");
+import redis from "redis";
+import { promisify } from "util";
 
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
+const redisClient = redis.createClient();
+await redisClient.connect();
+console.log(redisClient.isReady);
+
+await redisClient.on("ready", () => {
+  console.log("Redis connection is established");
 });
 
 redisClient.on("error", (err) => {
@@ -13,8 +16,4 @@ redisClient.on("error", (err) => {
 const redisGetAsync = promisify(redisClient.get).bind(redisClient);
 const redisSetAsync = promisify(redisClient.set).bind(redisClient);
 
-module.exports = {
-  redisClient,
-  redisGetAsync,
-  redisSetAsync,
-};
+export { redisClient, redisGetAsync, redisSetAsync };

@@ -2,6 +2,7 @@ import Yup from "yup";
 import db from "../database/database.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { redisClient } from "../redis.js";
 
 export async function validateLogin(req, res, next) {
   console.log(req.body);
@@ -103,6 +104,7 @@ export async function getUserFromDatabase(req, res) {
         expiresIn: "1m",
       });
       console.log("change token time");
+      //redisClient.rpush('onlineUsers', getUser.rows[0].username);
       return res.status(200).json({
         success: true,
         message: "Login successful!",

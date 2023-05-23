@@ -4,11 +4,9 @@ import http from "http";
 import { api } from "./routes/routes.js";
 import helmet from "helmet";
 import cors from "cors";
-import redis from "redis";
-import db from "./database/database.js";
+import { redisClient } from "./redis.js";
 import rateLimit from "express-rate-limit";
 import { Server } from "socket.io";
-import jwt from "jsonwebtoken";
 
 const corsOptions = {
   origin: "http://localhost:8080",
@@ -45,9 +43,14 @@ for (let i = 1; i <= 5; i++) {
   const roomName = `room${i}`;
   socket.of("/").adapter.rooms.set(roomName, new Set());
 }
+
 socket.on("connection", (socket) => {
-  socket.on("message", (messageData) => {
+  socket.on("message", async (messageData) => {
     console.log(`Received message from client: ${messageData}`);
+    const roomName = messageData.channel;
+    // Store the message in Redis associated with the room
+    await redisClient.lPush(roomName, JSON.stringify(messageData));
+    console.log(`Message stored in Redis for room ${roomName}`);
     socket.broadcast.emit("message", messageData);
   });
 
@@ -56,14 +59,19 @@ socket.on("connection", (socket) => {
     console.log(`User ${socket.id} joined room ${roomName}`);
   });
 
-  socket.on("createRoom", (roomName) => {
-    // Join the room
+  socket.on("createRoom", async (roomName) => {
     socket.join(roomName);
-    console.log(`joined ${roomName}`);
+    console.log(`Joined ${roomName}`);
+
     // Broadcast to everyone in the room
     socket
       .to(roomName)
       .emit("message", `A new room has been created: ${roomName}`);
+
+    // Create an empty Redis hash for the room
+    await redisClient.lPush(roomName, "");
+
+    console.log(`Room ${roomName} created`);
   });
 });
 

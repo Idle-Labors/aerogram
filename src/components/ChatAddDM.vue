@@ -34,7 +34,6 @@
 
 <script>
 import Vue from "vue";
-import { user } from "../router/api";
 import socket from "@/modules/socket.js";
 
 export default Vue.extend({

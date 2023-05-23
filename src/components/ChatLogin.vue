@@ -54,7 +54,7 @@
 
 <script>
 import Vue from "vue";
-import { user } from "../router/api";
+import { user } from "@/router/api";
 
 export default Vue.extend({
   data() {
