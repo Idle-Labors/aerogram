@@ -6,7 +6,7 @@
         class="h5 text-color mb-2 sidebar-item text-color flex-row"
       >
         <b-icon icon="chat-text-fill"></b-icon>
-        Direct Messages
+        Private Channels
       </p>
       <b-collapse id="collapse-dm" visible class="mb-2">
         <div v-for="user in users" :key="user" @click="joinChannel(user)">
@@ -14,8 +14,6 @@
             <b-icon icon="hash"></b-icon> {{ user }}
           </p>
         </div>
-        <p class="smaller-text sidebar-item text-color">Username</p>
-        <p class="smaller-text sidebar-item text-color">Another Username</p>
       </b-collapse>
     </div>
   </div>
@@ -38,14 +36,14 @@ export default Vue.extend({
   methods: {
     joinChannel(user) {
       socket.emit("join", user);
-      console.log("joined");
+      this.$emit("selectedChannel", user);
     },
   },
 });
 </script>
 <style>
 .sidebar-item:hover {
-  background-color: rgba(90, 125, 115, 0.521);
+  background-color: rgba(90, 92, 125, 0.671);
   border-radius: 10px;
   size: 100%;
 }

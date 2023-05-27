@@ -48,7 +48,6 @@ export default Vue.extend({
   methods: {
     closeModal() {
       this.$emit("close-addChannel");
-      console.log("emit close");
     },
     addChannelToList() {
       console.log(this.channel);

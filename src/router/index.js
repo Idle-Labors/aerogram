@@ -33,8 +33,7 @@ const routes = [
 const router = new VueRouter({
   routes,
 });
-//this logic should be fixed up for sure
-/*
+
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem("aeroChatToken");
   if (to.name !== "Login" && !isAuthenticated) {
@@ -45,5 +44,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-*/
+
 export default router;

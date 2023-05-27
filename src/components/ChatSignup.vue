@@ -28,10 +28,12 @@
             placeholder="Enter Password"
           />
 
-          <b-input-group-append>
-            <b-button variant="outline-secondary" @click="showPass = !showPass">
-              <b-icon :icon="showPass ? 'eye-slash' : 'eye'" />
-            </b-button>
+          <b-input-group-append is-text>
+            <b-icon
+              :icon="showPass ? 'eye-slash' : 'eye'"
+              font-scale="1.5"
+              @click="showPass = !showPass"
+            />
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
@@ -41,14 +43,16 @@
           <b-form-input
             required
             v-model="passwordCheck"
-            :type="showPass ? 'text' : 'password'"
+            :type="showConf ? 'text' : 'password'"
             placeholder="Re-Enter Password"
           />
 
-          <b-input-group-append>
-            <b-button variant="outline-secondary" @click="showPass = !showPass">
-              <b-icon :icon="showPass ? 'eye-slash' : 'eye'" />
-            </b-button>
+          <b-input-group-append is-text>
+            <b-icon
+              :icon="showConf ? 'eye-slash' : 'eye'"
+              font-scale="1.5"
+              @click="showConf = !showConf"
+            />
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
@@ -58,18 +62,18 @@
       </div>
 
       <div class="d-flex justify-content-evenly">
-        <div class="login-button mt-4 mb-4">
+        <div class="login-button mt-4 mb-2">
+          <b-button variant="light" class="mx-3" @click="cancel" type="submit"
+            >Cancel</b-button
+          >
+        </div>
+        <div class="login-button mt-4 mb-2">
           <b-button
-            variant="secondary"
+            variant="dark"
             class="mx-3"
             @click="signupValidate"
             type="submit"
             >Sign Up</b-button
-          >
-        </div>
-        <div class="login-button mt-4 mb-4">
-          <b-button variant="light" class="mx-3" @click="cancel" type="submit"
-            >Cancel</b-button
           >
         </div>
       </div>
@@ -88,6 +92,7 @@ export default {
       passwordCheck: "",
       email: "",
       showPass: false,
+      showConf: false,
       errorMsg: "",
     };
   },
@@ -122,8 +127,7 @@ export default {
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: #282b30;
-  color: #7aa6e9;
+  background: linear-gradient(315deg, #b4b4ac, #d4d4d496);
   margin: 0 auto;
   margin-top: 2rem;
 }

@@ -2,7 +2,6 @@ import Yup from "yup";
 import db from "../database/database.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { redisClient } from "../redis.js";
 
 export async function validateLogin(req, res, next) {
   console.log(req.body);
@@ -40,7 +39,6 @@ export async function validateSignup(req, res, next) {
     await signupSchema.validate(req.body);
     next();
   } catch (err) {
-    console.log(req.body);
     res.status(400).json({ message: err.message });
   }
 }
@@ -48,19 +46,16 @@ export async function validateSignup(req, res, next) {
 export async function addUserToDatabase(req, res) {
   const { username, email, password } = req.body;
   try {
-    console.log("before db query");
     const getUser = await db.query(
       "SELECT * FROM users.info WHERE username = $1 OR email = $2",
       [username, email]
     );
-    console.log("after db query");
     if (getUser.rowCount > 0) {
       return res
         .status(400)
         .json({ success: false, message: "Username or email already exists" });
     } else {
       //SALT ME
-      console.log("pw");
       const hashedPassword = await bcrypt.hash(password, 10);
       const result = await db.query(
         "INSERT INTO users.info (username, email, password) VALUES ($1, $2, $3) RETURNING *",
@@ -101,9 +96,8 @@ export async function getUserFromDatabase(req, res) {
         .json({ success: false, message: "Invalid username or password" });
     } else if (isPassword) {
       const token = jwt.sign({ sub: getUser.id }, process.env.JWT_SECRET, {
-        expiresIn: "1m",
+        expiresIn: "6h",
       });
-      console.log("change token time");
       //redisClient.rpush('onlineUsers', getUser.rows[0].username);
       return res.status(200).json({
         success: true,

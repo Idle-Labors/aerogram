@@ -17,19 +17,19 @@
             v-model="password"
             :type="showPass ? 'text' : 'password'"
             placeholder="Enter Password"
-          />
-
-          <b-input-group-append>
-            <b-button variant="outline-secondary" @click="showPass = !showPass">
-              <b-icon :icon="showPass ? 'eye-slash' : 'eye'" />
-            </b-button>
+          /><b-input-group-append is-text>
+            <b-icon
+              :icon="showPass ? 'eye-slash' : 'eye'"
+              font-scale="1.5"
+              @click="showPass = !showPass"
+            />
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
 
       <div class="login-button mt-4 mb-4">
         <b-button
-          variant="secondary"
+          variant="dark"
           class="mx-3"
           @click="loginValidate"
           type="submit"
@@ -98,8 +98,8 @@ export default Vue.extend({
   min-width: 350px;
   border-radius: 15px;
   border: none;
-  background: #282b30;
-  color: #7aa6e9;
+  background: linear-gradient(315deg, #b4b4ac, #d4d4d496);
+
   margin: 0 auto;
   margin-top: 5rem;
   padding: 1rem;

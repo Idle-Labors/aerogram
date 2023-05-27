@@ -18,7 +18,7 @@
         <slot name="ChannelList"></slot>
       </div>
       <template #footer="{ hide }">
-        <div class="footer text-light p-3 flex-row">
+        <div class="footer text-light p-1 flex-row">
           <b-button-group>
             <b-button
               size=""
@@ -27,12 +27,17 @@
               @click="addChannel"
             >
               <span class="text-color">
-                <b-icon icon="plus-circle-fill"></b-icon> Channel
+                <b-icon icon="plus-circle-fill"></b-icon> Private
               </span>
             </b-button>
             <b-button size="" variant="outline-success" @click="addUser">
               <span class="text-color">
-                <b-icon icon="person-plus-fill"></b-icon> Message
+                <b-icon icon="person-plus-fill"></b-icon> Join
+              </span>
+            </b-button>
+            <b-button size="" variant="outline-success" @click="logout">
+              <span class="text-color">
+                <b-icon icon="person-plus-fill"></b-icon> Logout
               </span>
             </b-button>
           </b-button-group>
@@ -50,6 +55,10 @@ export default Vue.extend({
   },
   components: {},
   methods: {
+    logout() {
+      localStorage.removeItem("aeroChatToken");
+      this.$router.push("/");
+    },
     addUser() {
       this.$emit("render-addUser");
       console.log("emit success");
@@ -63,19 +72,25 @@ export default Vue.extend({
 </script>
 
 <style>
+.sidebar-item:hover {
+  background-color: rgba(90, 92, 125, 0.671);
+  border-radius: 10px;
+  size: 100%;
+}
+
 .footer .btn-outline-success {
-  border-color: rgba(90, 125, 115);
+  border-color: rgba(90, 92, 125);
 }
 .footer .btn-outline-success:hover {
   color: #fff;
-  background-color: rgba(90, 125, 115);
-  border-color: rgba(90, 125, 115);
+  background-color: rgba(90, 92, 125);
+  border-color: rgba(90, 92, 125);
 }
 .header {
-  background-color: rgba(90, 125, 115);
+  background-color: rgb(109, 111, 150);
 }
 .sidebar-item:hover {
-  background-color: rgba(90, 125, 115, 0.521);
+  background-color: rgba(90, 92, 125, 0.671);
   border-radius: 10px;
   size: 100%;
 }

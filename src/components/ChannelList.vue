@@ -17,14 +17,6 @@
           <b-icon icon="hash"></b-icon> {{ channel }}
         </p>
       </div>
-      <p class="smaller-text sidebar-item text-color">
-        <b-icon icon="hash"></b-icon>
-        SomeChannel
-      </p>
-      <p class="smaller-text sidebar-item text-color">
-        <b-icon icon="hash"></b-icon>
-        AnotherChannel
-      </p>
     </b-collapse>
   </div>
 </template>
@@ -47,14 +39,13 @@ export default Vue.extend({
     joinChannel(channel) {
       socket.emit("joinRoom", channel);
       this.$emit("selectedChannel", channel);
-      console.log("joined");
     },
   },
 });
 </script>
 <style>
 .sidebar-item:hover {
-  background-color: rgba(90, 125, 115, 0.521);
+  background-color: rgba(90, 92, 125, 0.671);
   border-radius: 10px;
   size: 100%;
 }

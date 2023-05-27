@@ -39,6 +39,7 @@ app.use(cors(corsOptions));
 app.use("/", api);
 app.use(helmet());
 
+//Creates five rooms when server starts up
 for (let i = 1; i <= 5; i++) {
   const roomName = `room${i}`;
   socket.of("/").adapter.rooms.set(roomName, new Set());
@@ -60,15 +61,13 @@ socket.on("connection", (socket) => {
   });
 
   socket.on("createRoom", async (roomName) => {
-    socket.join(roomName);
-    console.log(`Joined ${roomName}`);
+    //socket.join(roomName);
 
     // Broadcast to everyone in the room
     socket
       .to(roomName)
       .emit("message", `A new room has been created: ${roomName}`);
 
-    // Create an empty Redis hash for the room
     await redisClient.lPush(roomName, "");
 
     console.log(`Room ${roomName} created`);

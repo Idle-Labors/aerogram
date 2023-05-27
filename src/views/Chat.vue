@@ -5,7 +5,10 @@
       @render-addChannel="rendersAddChannel"
     >
       <template v-slot:DirectMessageList>
-        <DirectMessageList :users="users" />
+        <DirectMessageList
+          :users="users"
+          @selectedChannel="selectedChannel = $event"
+        />
       </template>
       <template v-slot:ChannelList>
         <ChannelList
@@ -26,7 +29,7 @@
     <component
       :is="addChannel ? 'ChannelCreate' : false"
       @close-addChannel="closeAddChannel"
-      @create-newChannel="createChannel"
+      @create-newChannel="createAddUser"
     />
   </div>
 </template>
@@ -60,29 +63,22 @@ export default {
   },
   methods: {
     rendersAddUser() {
-      console.log("check");
       this.addUser = true;
     },
     closeAddUser() {
       this.addUser = false;
     },
     rendersAddChannel() {
-      console.log("before");
       this.addChannel = true;
-      console.log("after");
     },
     closeAddChannel() {
       this.addChannel = false;
     },
     createAddUser(username) {
-      console.log("in create user");
       this.users.push(username);
     },
     createChannel(channelName) {
-      console.log("in createChannel");
       this.channels.push(channelName);
-      console.log("pushed channel");
-      console.log(this.channels);
     },
   },
 };

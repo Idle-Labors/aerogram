@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <div class="img-placeholder"></div>
-    <component
-      :is="renderLogin ? 'ChatLogin' : 'ChatSignup'"
-      @render-signup="rendersSignup"
-      @login-success="loginSuccess"
-      @signup-success="rendersLogin"
-      @signup-cancel="rendersLogin"
-    />
+    <div class="img-bg">
+      <component
+        :is="renderLogin ? 'ChatLogin' : 'ChatSignup'"
+        @render-signup="rendersSignup"
+        @login-success="loginSuccess"
+        @signup-success="rendersLogin"
+        @signup-cancel="rendersLogin"
+      />
+    </div>
   </div>
 </template>
 
@@ -41,15 +42,29 @@ export default {
 </script>
 
 <style>
-#app {
+html,
+body {
+  height: 100%;
+}
+
+body {
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin: 0;
+  padding: 0;
 }
-.img-placeholder {
-  background-image: url(../assets/login51.webp);
-  height: 7rem;
+
+#app {
+  height: 100%;
+}
+
+.img-bg {
+  height: 100%;
+  background-image: url(../assets/loginbg.webp);
+  background-size: 120vh;
+  background-repeat: round;
 }
 </style>

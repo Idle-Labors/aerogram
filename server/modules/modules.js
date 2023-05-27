@@ -1,5 +1,4 @@
 import { redisClient } from "../redis.js";
-import { promisify } from "util"; //this is the issue try and change it back
 
 export async function rateLimiter(req, res, next) {
   const ipAddress = req.socket.remoteAddress;
@@ -12,7 +11,7 @@ export async function getChannelMessages(req, res) {
 
   try {
     // Retrieve the messages for the room from Redis list
-    const messages = await redisClient.LRANGE(channel, 0, -1);
+    const messages = await redisClient.LRANGE(channel, 0, -2);
     console.log(messages);
     // Parse and send the messages as a response
     const parsedMessages = messages.map((message) => JSON.parse(message));
@@ -22,8 +21,6 @@ export async function getChannelMessages(req, res) {
     return res.status(500).json({ error: "Failed to retrieve messages" });
   }
 }
-
-export function updateActiveUsers() {}
 
 export function getActiveUsers(req, res) {
   redisClient.LRANGE("onlineUsers", 0, -1, (err, onlineUsers) => {
