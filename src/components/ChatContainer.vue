@@ -26,11 +26,7 @@
         v-model="text"
         @keyup.enter="sendMessage"
       />
-      <img
-        src="@/assets/paper-plane-send.svg"
-        class="img-resize"
-        @click="sendMessage"
-      />
+      <img src="@/assets/send1.svg" class="img-resize" @click="sendMessage" />
     </div>
   </div>
 </template>
@@ -52,10 +48,7 @@ export default {
       author: sessionStorage.getItem("aeroUserName"),
       text: "",
       timestamp: new Date().toLocaleTimeString(),
-      messages: [
-        { id: 1, author: "Alice", text: "Hello!" },
-        { id: 2, author: "Bob", text: "Hi Alice!" },
-      ],
+      messages: [],
     };
   },
   mounted() {
@@ -64,6 +57,7 @@ export default {
     });
 
     socket.on("message", (message) => {
+      console.log(message);
       if (message.channel === this.selectedChannel) {
         this.messages.push(message);
       }
@@ -133,9 +127,11 @@ input:focus {
   position: fixed;
   left: 0;
   bottom: 0;
+  border-top-right-radius: 12px;
   width: 80%;
   margin-left: 225px;
-  background-color: white;
+  padding-top: 20px;
+  background-color: #282b30;
   color: black;
   text-align: center;
 }

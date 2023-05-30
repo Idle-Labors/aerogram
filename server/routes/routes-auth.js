@@ -98,7 +98,6 @@ export async function getUserFromDatabase(req, res) {
       const token = jwt.sign({ sub: getUser.id }, process.env.JWT_SECRET, {
         expiresIn: "6h",
       });
-      //redisClient.rpush('onlineUsers', getUser.rows[0].username);
       return res.status(200).json({
         success: true,
         message: "Login successful!",

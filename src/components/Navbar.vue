@@ -4,16 +4,17 @@
       visible
       id="sidebar"
       text-variant="light"
-      width="220px"
+      width="225px"
       aria-labelledby="sidebar-no-header-title"
       no-header
       shadow
       no-close-on-esc
     >
       <h4 style="width: 100%" class="header">
-        <img src="@/assets/paper-plane-fill-light.svg" class="img mt-4 mb-5" />
+        <img src="@/assets/paper-plane-send.svg" class="img mt-3 mb-3" /> AERO
       </h4>
       <div class="p-3 mt-3">
+        <slot name="ActiveUserList"></slot>
         <slot name="DirectMessageList"></slot>
         <slot name="ChannelList"></slot>
       </div>
@@ -37,7 +38,7 @@
             </b-button>
             <b-button size="" variant="outline-success" @click="logout">
               <span class="text-color">
-                <b-icon icon="person-plus-fill"></b-icon> Logout
+                <b-icon icon="person-dash-fill"></b-icon> Logout
               </span>
             </b-button>
           </b-button-group>
@@ -49,6 +50,8 @@
 
 <script>
 import Vue from "vue";
+import socket from "@/modules/socket";
+
 export default Vue.extend({
   data() {
     return {};
@@ -56,7 +59,10 @@ export default Vue.extend({
   components: {},
   methods: {
     logout() {
+      const user = sessionStorage.getItem("aeroUserName");
+      socket.emit("logout", user);
       localStorage.removeItem("aeroChatToken");
+      sessionStorage.removeItem("aeroUserName");
       this.$router.push("/");
     },
     addUser() {
@@ -72,7 +78,8 @@ export default Vue.extend({
 </script>
 
 <style>
-.sidebar-item:hover {
+.sidebar-item:hover,
+.sidebar-item.active {
   background-color: rgba(90, 92, 125, 0.671);
   border-radius: 10px;
   size: 100%;
@@ -88,19 +95,17 @@ export default Vue.extend({
 }
 .header {
   background-color: rgb(109, 111, 150);
-}
-.sidebar-item:hover {
-  background-color: rgba(90, 92, 125, 0.671);
-  border-radius: 10px;
-  size: 100%;
+  color: #282b30;
+  font-weight: bolder;
+  font-style: oblique;
 }
 .footer {
   background-color: #282b30;
 }
 
 .img {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
 }
 
 .text-color {

@@ -4,6 +4,9 @@
       @render-addUser="rendersAddUser"
       @render-addChannel="rendersAddChannel"
     >
+      <template v-slot:ActiveUserList>
+        <ActiveUserList />
+      </template>
       <template v-slot:DirectMessageList>
         <DirectMessageList
           :users="users"
@@ -41,6 +44,7 @@ import ChannelList from "@/components/ChannelList.vue";
 import ChatAddDM from "@/components/ChatAddDM.vue";
 import ChannelCreate from "@/components/ChannelCreate.vue";
 import ChatContainer from "@/components/ChatContainer.vue";
+import ActiveUserList from "@/components/ActiveUserList.vue";
 
 export default {
   data() {
@@ -55,6 +59,7 @@ export default {
   name: "chat",
   components: {
     Navbar,
+    ActiveUserList,
     DirectMessageList,
     ChannelList,
     ChatAddDM,
