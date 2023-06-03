@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card class="custom-card">
+    <b-card class="custom-card" @keyup.enter="loginValidate">
       <b-form-group label="Username:">
         <b-form-input
           required

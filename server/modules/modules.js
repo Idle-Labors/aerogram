@@ -1,4 +1,5 @@
 import { redisClient } from "../redis.js";
+//import { db } from "../database/database.js";
 
 export async function rateLimiter(req, res, next) {
   const ipAddress = req.socket.remoteAddress;
@@ -22,13 +23,29 @@ export async function getChannelMessages(req, res) {
   }
 }
 
-export function getActiveUsers(req, res) {
-  redisClient.LRANGE("onlineUsers", 0, -1, (err, onlineUsers) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Failed to retrieve online users" });
-    } else {
-      res.json(onlineUsers);
+export async function storeRoomMessages() {
+  try {
+    const rooms = ["room1", "room2", "room3", "room4", "room5"];
+
+    for (const room of rooms) {
+      const messages = await redisClient.LRANGE(room, 0, -2);
+      const parsedMessages = messages.map((message) => JSON.parse(message));
+
+      for (const message of parsedMessages) {
+        let values = [
+          message.id,
+          room,
+          message.author,
+          message.text,
+          message.timestamp,
+        ];
+        await db.query(
+          `INSERT INTO ${room}_messages (id, channel, author, text, timestamp) VALUES ($1, $2, $3, $4, $5)`,
+          values
+        );
+      }
     }
-  });
+  } catch (error) {
+    console.error(error);
+  }
 }

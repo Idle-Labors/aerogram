@@ -1,4 +1,3 @@
-//import 'dotenv/config'
 import express from "express";
 import http from "http";
 import { api } from "./routes/routes.js";
@@ -7,6 +6,7 @@ import cors from "cors";
 import { redisClient } from "./redis.js";
 import rateLimit from "express-rate-limit";
 import { Server } from "socket.io";
+import { storeRoomMessages } from "./modules/modules.js";
 
 const corsOptions = {
   origin: "http://localhost:8080",
@@ -15,7 +15,7 @@ const corsOptions = {
 };
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 100,
+  max: 50,
   message: "What do you think you're doing?",
 });
 /*************************************
@@ -56,17 +56,24 @@ socket.on("connection", (socket) => {
 
   socket.on("joinRoom", async (roomName) => {
     socket.join(roomName.channel);
+    console.log(`joined ${roomName.channel}`);
     // Add the channel to the user's active room hash table
     await redisClient.sAdd(`UserRooms:${roomName.user}`, roomName.channel);
 
     //Generate and send a list of active users in the room
-    const activeInChannel = `Users-${roomName.channel}`;
-    let userList = await redisClient.LRANGE(activeInChannel, 0, -1);
+    const activeUsersKey = `Users:${roomName.channel}`;
+    const userListExists = await redisClient.exists(activeUsersKey);
+    if (!userListExists) {
+      await redisClient.lPush(activeUsersKey, roomName.user);
+    }
+    const userList = await redisClient.LRANGE(activeUsersKey, 0, -1);
     if (!userList.includes(roomName.user)) {
-      await redisClient.lPush(activeInChannel, roomName.user);
+      await redisClient.lPush(activeUsersKey, roomName.user);
       userList.push(roomName.user);
     }
-    socket.emit("userList", userList); // Emit event to the user who joined
+
+    // Emit active user list
+    socket.emit("userList", userList);
     socket.to(roomName.channel).emit("userList", userList);
 
     //Send a welcome message when a user joins
@@ -89,13 +96,19 @@ socket.on("connection", (socket) => {
     const userRoomsKey = `UserRooms:${username}`;
     const userRooms = await redisClient.sMembers(userRoomsKey);
     for (const room of userRooms) {
-      await redisClient.LREM(`Users-${room}`, 0, username);
-      const userList = await redisClient.LRANGE(`Users-${room}`, 0, -1);
+      //Go through and remove the user from the active user list for each room they are a part of
+      await redisClient.LREM(`Users:${room}`, 0, username);
+      console.log(userRooms);
+      const userList = await redisClient.LRANGE(`Users:${room}`, 0, -1);
+      //Emit updated list
       socket.to(room).emit("userList", userList);
     }
     // Remove the user's rooms entry from Redis
     await redisClient.del(userRoomsKey);
   });
 });
-
+/*
+const interval = 60 * 60 * 1000; // 1 hour in milliseconds
+setTimeout(storeRoomMessages, interval);
+*/
 server.listen(port, () => console.log(`Server running on ${port}`));

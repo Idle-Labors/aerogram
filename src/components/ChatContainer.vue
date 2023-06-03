@@ -55,7 +55,7 @@ export default {
     socket.on("connect", () => {
       console.log(`Connected ${socket.id}`);
     });
-
+    //Write security message
     socket.on("message", (message) => {
       console.log(message);
       if (message.channel === this.selectedChannel) {

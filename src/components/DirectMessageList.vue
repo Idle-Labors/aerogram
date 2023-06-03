@@ -10,7 +10,10 @@
       </p>
       <b-collapse id="collapse-dm" visible class="mb-2">
         <div v-for="user in users" :key="user" @click="joinChannel(user)">
-          <p class="smaller-text sidebar-item text-color">
+          <p
+            class="smaller-text sidebar-item text-color"
+            :class="{ active: isActive === user }"
+          >
             <b-icon icon="hash"></b-icon> {{ user }}
           </p>
         </div>
@@ -30,19 +33,27 @@ export default Vue.extend({
     },
   },
   data() {
-    return {};
+    return {
+      isActive: null,
+    };
   },
   components: {},
   methods: {
-    joinChannel(user) {
-      socket.emit("join", user);
-      this.$emit("selectedChannel", user);
+    joinChannel(channel) {
+      const selectionInfo = {
+        channel: channel,
+        user: sessionStorage.getItem("aeroUserName"),
+      };
+      socket.emit("joinRoom", selectionInfo);
+      this.$emit("selectedChannel", channel);
+      this.isActive = channel;
     },
   },
 });
 </script>
 <style>
-.sidebar-item:hover {
+.sidebar-item:hover,
+.sidebar-item.active {
   background-color: rgba(90, 92, 125, 0.671);
   border-radius: 10px;
   size: 100%;

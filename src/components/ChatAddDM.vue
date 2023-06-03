@@ -1,8 +1,8 @@
 <template>
   <div>
-    <b-card class="custom-card" @keyup.esc="closeModal">
+    <b-card class="custom-card" @keyup.esc="closeModal" @keyup.enter="joinRoom">
       <b-form-group label="Room To Join:">
-        <b-form-input required type="text" v-model="username" />
+        <b-form-input required type="text" v-model="channel" />
       </b-form-group>
 
       <div class="d-flex justify-content-evenly">
@@ -10,7 +10,7 @@
           <b-button
             variant="secondary"
             class="mx-3"
-            @click="addUserToList"
+            @click="joinRoom"
             type="submit"
             >Add</b-button
           >
@@ -39,7 +39,7 @@ import socket from "@/modules/socket.js";
 export default Vue.extend({
   data() {
     return {
-      username: "",
+      channel: "",
       errorMsg: "",
     };
   },
@@ -48,9 +48,8 @@ export default Vue.extend({
     closeModal() {
       this.$emit("close-addUser");
     },
-    addUserToList() {
-      socket.emit("joinRoom", this.username);
-      this.$emit("create-addUser", this.username);
+    joinRoom() {
+      this.$emit("create-addUser", this.channel);
       this.$emit("close-addUser");
     },
   },

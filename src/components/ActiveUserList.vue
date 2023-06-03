@@ -30,7 +30,6 @@ export default Vue.extend({
   },
   created() {
     socket.on("userList", (users) => {
-      console.log("!!");
       this.activeUsers = [];
       this.activeUsers = users;
     });

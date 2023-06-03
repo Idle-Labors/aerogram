@@ -1,6 +1,10 @@
 <template>
   <div>
-    <b-card class="custom-card" @keyup.esc="closeModal">
+    <b-card
+      class="custom-card"
+      @keyup.esc="closeModal"
+      @keyup.enter="addChannelToList"
+    >
       <b-form-group label="Enter Channel Name:">
         <b-form-input required type="text" v-model="channel" />
       </b-form-group>
