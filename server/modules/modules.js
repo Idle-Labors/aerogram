@@ -25,7 +25,7 @@ export async function getChannelMessages(req, res) {
 
 export async function storeRoomMessages() {
   try {
-    const rooms = ["room1", "room2", "room3", "room4", "room5"];
+    const rooms = ["Room1", "Room2", "Room3", "Room4", "Room5"];
 
     for (const room of rooms) {
       const messages = await redisClient.LRANGE(room, 0, -2);

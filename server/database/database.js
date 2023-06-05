@@ -11,6 +11,6 @@ const db = new Pool({
 export default db;
 
 db.on("error", (err) => {
-  console.error("Unexpected error on idle client", err);
+  console.error("Unexpected error on aero  client", err);
   process.exit(-1);
 });
