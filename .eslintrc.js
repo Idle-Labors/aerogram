@@ -14,5 +14,13 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-unused-vars": "off",
+    "vue/no-unused-components": "off",
+    "vue/multi-word-component-names": [
+      "error",
+      {
+        ignores: ["Navbar", "chat", "login"],
+      },
+    ],
   },
 };
