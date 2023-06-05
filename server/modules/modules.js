@@ -1,5 +1,5 @@
 import { redisClient } from "../redis.js";
-//import { db } from "../database/database.js";
+import { db } from "../database/database.js";
 
 export async function rateLimiter(req, res, next) {
   const ipAddress = req.socket.remoteAddress;
