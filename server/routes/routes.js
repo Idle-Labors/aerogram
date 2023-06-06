@@ -12,3 +12,5 @@ api.post("/signup", validateSignup, addUserToDatabase);
 api.post("/login", validateLogin, getUserFromDatabase);
 
 api.get("/messages/:channel", getChannelMessages);
+
+api.get("/", async (req, res) => res.sendFile(path.join(__dirname, "../../dist", "index.html")));
